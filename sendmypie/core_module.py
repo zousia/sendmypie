@@ -56,14 +56,11 @@ class SendMyPie:
         email.email.message: The email data to send with send_message() function from smtplib
 
         """
-        
-        
+
         if imgs_directory == None:
             imgs_directory=os.getcwd()
         my_subject = subject
         my_dest = [] # list to store formatted emails_addresses after traitement
-        
-        
 
         for email_address in emails_addresses:                   
             # if an additional part for the eamil address is supplied
@@ -162,7 +159,6 @@ class SendMyPie:
         smtp = smtplib.SMTP(EMAIL_HOST, EMAIL_PORT)
         # smtp.set_debuglevel(1)
         smtp.starttls()
-        
 
         # check if socket is open
         try:
@@ -189,7 +185,7 @@ class SendMyPie:
             smtp.quit()
             print(f"closed smtp connection")
 
-        except SMTPException as e:
+        except smtplib.SMTPException as e:
             logger.error(f"ERROR SMTP CONNECTION RESPONSE :{e}")
 
 
