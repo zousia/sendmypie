@@ -15,9 +15,9 @@ All the html files passed to the method will be stored in a list which you will 
 ### 1. Call the class method from whithin your images' directory to make the email body with the html template and other parameters ###  
 
 ```python
-from sendmypie.core_module import *
+import sendmypie
 
-sendmypie = SendMyPie()
+sendmypie = sendmypie.SendMyPie()
 sendmypie.make_email_body_with_img(
                             exp="DISPLAYED NAME FOR YOUR EXP",  
                             emails_addresses=["dest_firstname.dest_lastname@domain.com",],  
@@ -87,8 +87,8 @@ sendmypie.make_email_body_with_img(
 ```
 
 ### C. If you want to send an email with variables in the html part ###  
-    * Make sure that the variables has been written in literal string format in the html file *  
-    * And prefix images src by "cid:" *
+    ** Make sure that the variables has been written in literal string format in the html file ** 
+    ** And prefix images src by "cid:" **
 
 ```html
 <html>
