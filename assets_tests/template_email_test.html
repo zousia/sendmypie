@@ -1,29 +1,56 @@
 <html>
     <head></head>
-    <style>
-        .my_global_style {
-            text-align: center;
-            color: #095a5a;
-            font-family: 'Courier New', Courier, monospace;
-        }
-        .my_title {
-            margin-left: auto;
-            margin-right: auto;
-            text-align: center;
-            color: #154444;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: "20px";
-        }
-    </style>
     <body>
-        <div class="my_global_style">
-            <h1>This is an email test from SendMyPie application</h1>
-            <div class="my_title">${key_variable1}
-                <img src="cid:name_img1.jpg" alt="name_img1" width="200">
-            </div>
-            <div class="my_title">${key_variable2}
-                <img src="cid:name_img2.jpg" alt="name_img2" width="200">
-            </div>
-        </div>
+        <table cellspacing="0" cellpadding="0" width="100%" style="border: 2; border-color: #095a5a;">
+            <tr  style="background-color: #000000; padding: 1.5rem">
+                <td style="background-color: #154444; margin: auto; text-align: center; align-content: center; color: #c9c0c0; font-family: 'Courier New', Courier, monospace;">
+                    <h1>This is an email test from SendMyPie application</h1>
+                </td>
+            </tr>
+            <tr>
+                <td style="background-color: #000000; margin: auto; text-align: center; padding: 1.2rem; color: #c9c0c0; font-family: 'Courier New', Courier, monospace; font-size: 1.2rem;">
+                    ${key_variable1}
+                </td>
+            </tr>
+            <tr>
+                <td style="background-color: #154444; margin: auto; text-align: center; align-content: center; color: #c9c0c0; font-family: 'Courier New', Courier, monospace; font-size: 1.2rem;">
+                    <img style="margin: auto; text-align: center; display: block;" src="cid:name_img1.jpg" alt="name_img1" width="200">
+                </td>
+            </tr>
+            <tr>
+                <td style="background-color: #000000; margin-left: auto; margin-right: auto; margin-bottom: 2rem; padding: 1.2rem; text-align: justify; align-content: center; color: #c9c0c0; font-family: 'Courier New', Courier, monospace; font-size: 0.9rem;">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse illum quam totam enim! Eius, cum aliquam. 
+                    Maxime obcaecati non rem adipisci quia ad, eius reprehenderit blanditiis, aspernatur, magnam assumenda ex. 
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laborum temporibus adipisci eum vero, ea ipsam vitae 
+                    reprehenderit eius officiis eligendi cupiditate quae ullam, eveniet, voluptate animi accusamus aliquam illo? Exercitationem?
+                </td>
+            </tr>
+
+            <tr>
+                <td style="background-color: #154444; margin: auto; padding: 1.2rem; text-align: center; color: #c9c0c0; font-family: 'Courier New', Courier, monospace; font-size: 1.2rem;">
+                
+                </td>
+            </tr>
+
+            <tr>
+                <td style="background-color: #000000; margin: auto; text-align: center; padding: 1.2rem; color: #c9c0c0; font-family: 'Courier New', Courier, monospace; font-size: 1.2rem;">
+                    ${key_variable2}
+                </td>
+            </tr>
+            <tr>
+                <td style="background-color: #154444; margin: auto; text-align: center; align-content: center; color: #c9c0c0; font-family: 'Courier New', Courier, monospace; font-size: 1.2rem;">
+                    <img style="margin: auto; text-align: center; display: block;" src="cid:name_img2.jpg" alt="name_img1" width="200">
+                </td>
+            </tr>
+            <tr>
+                <td style="background-color: #000000; margin-left: auto; margin-right: auto; margin-bottom: 2rem; padding: 1.2rem; text-align: justify; align-content: center; color: #c9c0c0; font-family: 'Courier New', Courier, monospace; font-size: 0.9rem;">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda, porro voluptas saepe explicabo alias 
+                    eveniet sint ipsum. Error obcaecati architecto sequi alias quam culpa aspernatur. Deserunt earum adipisci enim ullam?
+                    Repellendus minima nihil recusandae quisquam id sint debitis harum possimus, maiores, repellat repudiandae consequuntur. 
+                    Rerum repellat numquam voluptatem? Ullam error laboriosam laborum?
+                </td>
+            </tr>
+        </table>
     </body>
 </html>
+
