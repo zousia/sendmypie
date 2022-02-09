@@ -48,6 +48,8 @@ In your Google Account > Security > Activate Less secure app access and in your 
 sendmypie.open_send_close(EMAIL_HOST_USER="sender_name@domain.com",  
                                          EMAIL_HOST_PASSWORD="sender_password",  
                                          list_messages=list_to_send)
+# clear the list
+list_to_send.clear()
 ```
 
 ---  
