@@ -129,7 +129,9 @@ sendmypie.make_email_body_with_img(
 
 ```python
 >>> import sendmypie
+sendmypie Version 0.0.1 (2022-02-06) License GNU Version 3
 >>> sendmypie.command_line_inputs()
+Enter your exp name: 
 ```
 
 

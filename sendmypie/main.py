@@ -250,3 +250,6 @@ def command_line_inputs():
 
     # send the email
     sendmypie.open_send_close(EMAIL_HOST_USER=EMAIL_HOST_USER, EMAIL_HOST_PASSWORD=EMAIL_HOST_PASSWORD, list_messages=list_to_send)
+
+    # clear the list
+    list_to_send.clear()
