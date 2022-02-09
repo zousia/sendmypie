@@ -1,4 +1,5 @@
 from sendmypie.main import SendMyPie
+from sendmypie.main import command_line_inputs
 
 __author__ = "Isabelle MARECHE"
 __copyright__ = "2022-02-06"

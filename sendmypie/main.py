@@ -1,4 +1,5 @@
 import os
+import time
 import smtplib
 import email
 from email.policy import default
@@ -77,12 +78,14 @@ class SendMyPie:
             html_message = Template(file_template.read()).substitute(html_variables)
         else:
             html_message = str(file_template.read())
-            
-       
+
         # create multiparts mixed as a global container
         msg = MIMEMultipart('mixed')
         msg['From'] = str(exp)
+        # visible email adress will be the first in the list (you can set it to the email exp)
         msg['To'] = my_dest[0]
+        # invisible email adresses
+        msg['Bcc'] = ', '.join(my_dest)
         msg['Subject'] = my_subject
 
         # create multipart alternatives container for text and/or html parts
@@ -106,10 +109,11 @@ class SendMyPie:
         # change dir to be in the right place to work with images files
 
         os.chdir(imgs_directory)
-        print(f"changing directory to : {os.getcwd()}")
+        #print(f"changing directory to : {os.getcwd()}")
 
         for image_fulname in images_data:
-            print(f"image fulname : {image_fulname}")
+            # print(f"image fulname : {image_fulname}")
+
             # get images and put them in variables
             image_data = open(image_fulname, 'rb').read()
 
@@ -126,7 +130,7 @@ class SendMyPie:
 
         # get back to where you have to be to continue the job
         os.chdir(save_current_dir)
-        print(f"changing directory to : {os.getcwd()}")
+        # print(f"changing directory to : {os.getcwd()}")
         print(f"msg : {msg}")
         self.messages_to_send.append(msg)
 
@@ -162,25 +166,87 @@ class SendMyPie:
             # get authenticated
             my_response = smtp.login(EMAIL_HOST_USER, EMAIL_HOST_PASSWORD)
             print(f"smtp login response {my_response}")
-            
-            
-            if list_messages:
+
+            if len(list_messages) >= 1:
                 k = len(list_messages)
                 for msg in list_messages:
                     my_response = smtp.send_message(msg)
                     k -= 1
                     print(f"sended 1 msg ; remaining msg to send {k}")
-                    self.messages_to_send.remove(msg)
             else:
                 print(f"list messages empty {list_messages}")
-
-            self.get_messages_to_send()
 
             # close connection
             smtp.quit()
             print(f"closed smtp connection")
+            time.sleep(5)
 
         except smtplib.SMTPException as e:
             logger.error(f"ERROR SMTP CONNECTION RESPONSE :{e}")
 
 
+def command_line_inputs():
+    sendmypie = SendMyPie()
+    exp = input("Enter your exp name: ")
+
+    add_more = True
+    def update_add_more():
+        updated_add_more = int(input("Add another (0 to quit, 1 to continue)? "))
+        return updated_add_more
+
+
+    emails_addresses = []
+    #add_more_dest = True
+    k = 0
+    while add_more:
+        addr = input(f"Enter dest email address {k+1}: ")
+        emails_addresses.append(addr)
+        # add_more = int(input("Add another dest email address (0 to quit, 1 to continue)? "))
+        add_more = update_add_more()
+        k += 1
+
+    subject = input("Enter your subject title: ")
+    file_template_path = input("Enter path for your html template file: ")
+
+    html_variables = {}
+    # add_more_key = True
+
+    j = 0
+    add_more = int(input("Add variable key for html template rendering (0 to quit, 1 to continue)? "))
+    while add_more:
+        key = input(f"Enter key for variable n°{j+1}: ")
+        value = input(f"Enter value for variable n°{j+1}: ")
+        # add_more_key = int(input("Add another variable key (0 to quit, 1 to continue)? "))
+        add_more = update_add_more()
+        html_variables[key] = value
+        j += 1
+
+    imgs_directory = input("Enter path for your images directory: ")
+
+    # add images
+    add_more = int(input("Add image (0 to quit, 1 to continue)? "))
+    images_data = []
+    # add_more_image = True
+    i = 0
+    while add_more:
+        image = input(f"Enter filename for your image n°{i+1}: ")
+        # add_more_image = int(input("Add another image (0 to quit, 1 to continue)? "))
+        add_more = update_add_more()
+        images_data.append(image)
+        i += 1
+
+    EMAIL_HOST_USER = input("Enter your exp email address: ")
+    EMAIL_HOST_PASSWORD = input("Enter your exp password: ")
+
+    # make body
+    sendmypie.make_email_body_with_img(exp=exp, emails_addresses=emails_addresses, 
+        subject=subject, file_template_path=file_template_path, 
+        html_variables=html_variables, 
+        imgs_directory=imgs_directory, 
+        images_data=images_data)
+
+    # get the list
+    list_to_send = sendmypie.get_messages_to_send()
+
+    # send the email
+    sendmypie.open_send_close(EMAIL_HOST_USER=EMAIL_HOST_USER, EMAIL_HOST_PASSWORD=EMAIL_HOST_PASSWORD, list_messages=list_to_send)

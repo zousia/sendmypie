@@ -20,12 +20,16 @@ import sendmypie
 sendmypie = sendmypie.SendMyPie()
 sendmypie.make_email_body_with_img(
                             exp="DISPLAYED NAME FOR YOUR EXP",  
-                            emails_addresses=["dest_firstname.dest_lastname@domain.com",],  
+                            emails_addresses=["dest1_firstname.dest1_lastname@domain.com", 
+                                "dest2_firstname.dest2_lastname@domain.com",],  
                             subject="Subject title for the email",  
                             file_template_path="/the/path/to/our/template_email.html",  
                             images_data=['name_img1.png', 'name_img2.png', ]  
                             )  
 ```
+
+The first dest will be visible by all the recipients : you should set it to the exp email address.  
+All recipients will receive the same email.  
 
 ### 2. Assigne the all list of prepared emails in a local variable to use it as a parameter with the next class method ###  
 
@@ -67,7 +71,6 @@ sendmypie.make_email_body_with_img(
                             ) 
 ```
 
-
 ### B. To add a "+" string in the dest email address in order to make filtering easier in the dest mailbox ###  
 
 Add a __email_plus_addr__ parameter when you call the class method.  
@@ -87,8 +90,8 @@ sendmypie.make_email_body_with_img(
 ```
 
 ### C. If you want to send an email with variables in the html part ###  
-    ** Make sure that the variables has been written in literal string format in the html file ** 
-    ** And prefix images src by "cid:" **
+    **Make sure that the variables has been written in literal string format in the html file** 
+    **And prefix images src by "cid:"**
 
 ```html
 <html>
@@ -118,4 +121,53 @@ sendmypie.make_email_body_with_img(
                             imgs_directory='/the/path/to/our/images/directory',  
                             images_data=['name_img1.png', 'name_img2.png', ]  
                             ) 
+```
+
+### D. You can use __.command_line_inputs__ method in Python shell if needed ###  
+
+```python
+>>> import sendmypie
+>>> sendmypie.command_line_inputs()
+```
+
+
+### E. If you want to send an email with different variables in the html part for each of the recipient ###  
+
+
+```python
+variable_data = {
+    "dest1_firstname.dest1_lastname@domain.com": {
+        "subject": "subject for dest 1",
+        "key_variable1": "value_variable1_for dest1",
+        "key_variable2": "value_variable2_for dest1",
+    },
+    "dest2_firstname.dest2_lastname@domain.com": {
+        "subject": "subject for dest 2",
+        "key_variable1": "value_variable1_for dest2",
+        "key_variable2": "value_variable2_for dest2",
+    }
+}
+
+for dest in variable_data:
+    sendmypie.make_email_body_with_img(
+                            exp="DISPLAYED NAME FOR YOUR EXP",  
+                            emails_addresses=[dest,],  
+                            subject=variable_data[dest]["subject"],  
+                            file_template_path="/the/path/to/our/template_email.html",  
+                            email_plus_addr="personalstuff",  
+                            html_variables = {
+                                "key_variable1": variable_data[dest]["key_variable1"], 
+                                "key_variable2": variable_data[dest]["key_variable2"], 
+                            },
+                            imgs_directory='/the/path/to/our/images/directory',  
+                            images_data=['name_img1.png', 'name_img2.png', ]  
+                            ) 
+
+list_to_send = sendmypie.get_messages_to_send()
+
+sendmypie.open_send_close(EMAIL_HOST_USER="sender_name@domain.com",  
+                                         EMAIL_HOST_PASSWORD="sender_password",  
+                                         list_messages=list_to_send)
+# clear the list
+list_to_send.clear()
 ```
