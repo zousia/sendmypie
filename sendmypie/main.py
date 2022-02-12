@@ -2,6 +2,7 @@ import os
 import time
 import smtplib
 import email
+import re
 from email.policy import default
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -185,25 +186,76 @@ class SendMyPie:
             logger.error(f"ERROR SMTP CONNECTION RESPONSE :{e}")
 
 
+def update_add_more():
+    try:
+        updated_add_more = int(input("Add another (0 to quit, 1 to continue)? "))
+        return updated_add_more
+    except Exception as e:
+        return e
+
+
+def enter_email(addr="", add_more=True):
+    add_more = add_more
+    addr = addr
+    emails_addresses = []
+    # regex to validate email format
+    consensus_email_reg = '(?i)(\w*(\w*|[\-|\.|_])(\w*|[\-|\.|_])\w)*@(\w*(\w*|[\-|\.|_])(\w*|[\-|\.|_])\w)*\.\w{2,3}$'
+
+    # if addr is in params (for tests)
+    if addr != "":
+        # if there is a list of several addresses
+        if type(addr) == list:
+            for single_ad in addr:
+                if re.match(consensus_email_reg, single_ad):
+                    emails_addresses.append(single_ad)
+        # if there is one single email address
+        elif type(addr) == str and re.match(consensus_email_reg, addr):
+            emails_addresses.append(addr)
+    else:
+        # ask for input to the user
+        k = 0
+        while add_more or not re.match(consensus_email_reg, addr):
+            addr = input(f"Enter dest email address {k+1}: ")
+            if addr and re.match(consensus_email_reg, addr):
+                emails_addresses.append(addr)
+                k += 1
+            else:
+                addr = input(f"Enter dest VALID email address {k+1}: ")
+                if re.match(consensus_email_reg, addr):
+                    emails_addresses.append(addr)
+                    k += 1
+            # ask to the user if he wants to add more addresses
+            add_more = update_add_more()
+
+    print(f"emails_addresses {emails_addresses}")
+    return emails_addresses
+
+
+
 def command_line_inputs():
     sendmypie = SendMyPie()
     exp = input("Enter your exp name: ")
 
     add_more = True
-    def update_add_more():
-        updated_add_more = int(input("Add another (0 to quit, 1 to continue)? "))
-        return updated_add_more
+    # def update_add_more():
+    #     updated_add_more = int(input("Add another (0 to quit, 1 to continue)? "))
+    #     return updated_add_more
 
 
-    emails_addresses = []
-    #add_more_dest = True
-    k = 0
-    while add_more:
-        addr = input(f"Enter dest email address {k+1}: ")
-        emails_addresses.append(addr)
-        # add_more = int(input("Add another dest email address (0 to quit, 1 to continue)? "))
-        add_more = update_add_more()
-        k += 1
+    # emails_addresses = []
+    # k = 0
+    # consensus_email_reg = '(?i)(\w*(\w*|[\-|\.|_])(\w*|[\-|\.|_])\w)*@(\w*(\w*|[\-|\.|_])(\w*|[\-|\.|_])\w)*\.\w{2,3}$'
+    # while add_more:
+    #     addr = input(f"Enter dest email address {k+1}: ")
+    #     if re.match(consensus_email_reg, addr):
+    #         emails_addresses.append(addr)
+    #         add_more = update_add_more()
+    #         k += 1
+    #     else:
+    #         addr = input(f"Enter dest VALID email address {k+1}: ")
+
+
+    emails_addresses = enter_email()
 
     subject = input("Enter your subject title: ")
     file_template_path = input("Enter path for your html template file: ")
@@ -253,3 +305,7 @@ def command_line_inputs():
 
     # clear the list
     list_to_send.clear()
+
+
+if __name__ == "__main__":
+    command_line_inputs()

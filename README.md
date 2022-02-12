@@ -24,7 +24,7 @@ sendmypie.make_email_body_with_img(
                                 "dest2_firstname.dest2_lastname@domain.com",],  
                             subject="Subject title for the email",  
                             file_template_path="/the/path/to/our/template_email.html",  
-                            images_data=['name_img1.png', 'name_img2.png', ]  
+                            images_data=['name_img1.jpg', 'name_img2.jpg', ]  
                             )  
 ```
 
@@ -69,7 +69,7 @@ sendmypie.make_email_body_with_img(
                             subject="Subject title for the email",  
                             file_template_path="/the/path/to/our/template_email.html",  
                             imgs_directory='/the/path/to/our/images/directory',  
-                            images_data=['name_img1.png', 'name_img2.png', ]  
+                            images_data=['name_img1.jpg', 'name_img2.jpg', ]  
                             ) 
 ```
 
@@ -87,7 +87,7 @@ sendmypie.make_email_body_with_img(
                             file_template_path="/the/path/to/our/template_email.html",  
                             email_plus_addr="personalstuff", 
                             imgs_directory='/the/path/to/our/images/directory',  
-                            images_data=['name_img1.png', 'name_img2.png', ]  
+                            images_data=['name_img1.jpg', 'name_im2.jpg', ]  
                             ) 
 ```
 
@@ -121,16 +121,21 @@ sendmypie.make_email_body_with_img(
                                 "key_variable2": "value_variable2", 
                             },
                             imgs_directory='/the/path/to/our/images/directory',  
-                            images_data=['name_img1.png', 'name_img2.png', ]  
+                            images_data=['name_img1.jpg', 'name_imjpg', ]  
                             ) 
 ```
 
-### D. You can use __.command_line_inputs__ method in Python shell if needed ###  
+### D. You can use __.command_line_inputs__ method in Python shell or in a console if needed ###  
 
 ```python
 >>> import sendmypie
 sendmypie Version 0.0.1 (2022-02-06) License GNU Version 3
 >>> sendmypie.command_line_inputs()
+Enter your exp name: 
+```
+
+```bash
+user@host:~/SENDMYPIE$ python3 sendmypie/main.py
 Enter your exp name: 
 ```
 
@@ -164,7 +169,7 @@ for dest in variable_data:
                                 "key_variable2": variable_data[dest]["key_variable2"], 
                             },
                             imgs_directory='/the/path/to/our/images/directory',  
-                            images_data=['name_img1.png', 'name_img2.png', ]  
+                            images_data=['name_img1.jpg', 'name_img2.jpg', ]  
                             ) 
 
 list_to_send = sendmypie.get_messages_to_send()
