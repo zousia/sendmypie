@@ -3,6 +3,7 @@ import time
 import smtplib
 import email
 import re
+from sty import fg, bg, rs # for colors in print
 from email.policy import default
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -132,7 +133,7 @@ class SendMyPie:
         # get back to where you have to be to continue the job
         os.chdir(save_current_dir)
         # print(f"changing directory to : {os.getcwd()}")
-        print(f"msg : {msg}")
+        # print(f"msg : {msg}")
         self.messages_to_send.append(msg)
 
         return self.messages_to_send
@@ -188,7 +189,7 @@ class SendMyPie:
 
 def update_add_more():
     try:
-        updated_add_more = int(input("Add another (0 to quit, 1 to continue)? "))
+        updated_add_more = int(input(f"{bg.black} {fg.li_red}Add another (0 to quit)? {fg.rs} {bg.rs}\n"))
         return updated_add_more
     except Exception as e:
         return e
@@ -215,80 +216,66 @@ def enter_email(addr="", add_more=True):
         # ask for input to the user
         k = 0
         while add_more or not re.match(consensus_email_reg, addr):
-            addr = input(f"Enter dest email address {k+1}: ")
+            addr = input(f"{bg.black} {fg.li_blue}Enter dest email address {k+1}: {fg.rs} {bg.rs}\n")
             if addr and re.match(consensus_email_reg, addr):
                 emails_addresses.append(addr)
                 k += 1
             else:
-                addr = input(f"Enter dest VALID email address {k+1}: ")
+                addr = input(f"{bg.black} {fg.li_blue}Enter dest VALID email address {k+1}: {fg.rs} {bg.rs}\n")
                 if re.match(consensus_email_reg, addr):
                     emails_addresses.append(addr)
                     k += 1
             # ask to the user if he wants to add more addresses
             add_more = update_add_more()
 
-    print(f"emails_addresses {emails_addresses}")
+    print(f"{bg.black} {fg.li_yellow}Recipients emails_addresses {emails_addresses}{fg.rs} {bg.rs}\n")
     return emails_addresses
 
 
 
 def command_line_inputs():
     sendmypie = SendMyPie()
-    exp = input("Enter your exp name: ")
-
-    add_more = True
-    # def update_add_more():
-    #     updated_add_more = int(input("Add another (0 to quit, 1 to continue)? "))
-    #     return updated_add_more
-
-
-    # emails_addresses = []
-    # k = 0
-    # consensus_email_reg = '(?i)(\w*(\w*|[\-|\.|_])(\w*|[\-|\.|_])\w)*@(\w*(\w*|[\-|\.|_])(\w*|[\-|\.|_])\w)*\.\w{2,3}$'
-    # while add_more:
-    #     addr = input(f"Enter dest email address {k+1}: ")
-    #     if re.match(consensus_email_reg, addr):
-    #         emails_addresses.append(addr)
-    #         add_more = update_add_more()
-    #         k += 1
-    #     else:
-    #         addr = input(f"Enter dest VALID email address {k+1}: ")
-
+    exp = input(f"{bg.black} {fg.li_blue}Enter your exp name: {fg.rs} {bg.rs}\n")
 
     emails_addresses = enter_email()
 
-    subject = input("Enter your subject title: ")
-    file_template_path = input("Enter path for your html template file: ")
+    subject = input(f"{bg.black} {fg.li_blue}Enter your subject title: {fg.rs} {bg.rs}\n")
+    file_template_path = input(f"{bg.black} {fg.li_blue}Enter path for your html template file: {fg.rs} {bg.rs}\n")
 
     html_variables = {}
-    # add_more_key = True
 
     j = 0
-    add_more = int(input("Add variable key for html template rendering (0 to quit, 1 to continue)? "))
+    try:
+        add_more = int(input(f"{bg.black} {fg.li_blue}Add variable key for html template rendering (0 to quit)? {fg.rs} {bg.rs}\n"))
+    except Exception as e:
+        add_more = 1
+
     while add_more:
-        key = input(f"Enter key for variable n°{j+1}: ")
-        value = input(f"Enter value for variable n°{j+1}: ")
-        # add_more_key = int(input("Add another variable key (0 to quit, 1 to continue)? "))
+        key = input(f"{bg.black} {fg.li_blue}Enter key for variable n°{j+1}: {fg.rs} {bg.rs}\n")
+        value = input(f"{bg.black} {fg.li_blue}Enter value for variable n°{j+1}: {fg.rs} {bg.rs}\n")
+
         add_more = update_add_more()
         html_variables[key] = value
         j += 1
 
-    imgs_directory = input("Enter path for your images directory: ")
+    imgs_directory = input(f"{bg.black} {fg.li_blue}Enter path for your images directory: {fg.rs} {bg.rs}\n")
 
     # add images
-    add_more = int(input("Add image (0 to quit, 1 to continue)? "))
+    try:
+        add_more = int(input(f"{bg.black} {fg.li_blue}Add image (0 to quit)? {fg.rs} {bg.rs}\n"))
+    except Exception as e:
+        add_more = 1
+
     images_data = []
-    # add_more_image = True
     i = 0
     while add_more:
-        image = input(f"Enter filename for your image n°{i+1}: ")
-        # add_more_image = int(input("Add another image (0 to quit, 1 to continue)? "))
+        image = input(f"{bg.black} {fg.li_blue}Enter filename for your image n°{i+1}: {fg.rs} {bg.rs}\n")
         add_more = update_add_more()
         images_data.append(image)
         i += 1
 
-    EMAIL_HOST_USER = input("Enter your exp email address: ")
-    EMAIL_HOST_PASSWORD = input("Enter your exp password: ")
+    EMAIL_HOST_USER = input(f"{bg.black} {fg.li_blue}Enter your exp email address: {fg.rs} {bg.rs}\n")
+    EMAIL_HOST_PASSWORD = input(f"{bg.black} {fg.li_blue}Enter your exp password: {fg.rs} {bg.rs}\n")
 
     # make body
     sendmypie.make_email_body_with_img(exp=exp, emails_addresses=emails_addresses, 
