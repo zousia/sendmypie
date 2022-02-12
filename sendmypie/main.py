@@ -11,9 +11,8 @@ from email.mime.image import MIMEImage
 from string import Template
 
 import logging
-
+from sendmypie.settings import logging_config
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
 
 
 class SendMyPie:
@@ -24,7 +23,8 @@ class SendMyPie:
         self.name = name
         
     def get_messages_to_send(self):
-        print(f"Total : {len(self.messages_to_send)}")
+        #print(f"Total : {len(self.messages_to_send)}")
+        logger.info(f"Total : {len(self.messages_to_send)}")
         return self.messages_to_send
 
     def make_email_body_with_img(self, exp, emails_addresses, 
@@ -72,6 +72,11 @@ class SendMyPie:
             my_dest.append(format_adrr) #= [f"{format_adrr}", ] 
         
         print(f"prepare mail to dest : {my_dest}")
+        logger.info(f"prepare mail to dest : {my_dest}")
+        logger.info(f"template path : {file_template_path}")
+        logger.info(f"html_variables : {html_variables}")
+        logger.info(f"images dir : {imgs_directory}")
+        
 
         # get html template for the body of the email
         file_template = open(file_template_path, "r")
@@ -115,6 +120,7 @@ class SendMyPie:
 
         for image_fulname in images_data:
             # print(f"image fulname : {image_fulname}")
+            logger.info(f"image fulname : {image_fulname}")
 
             # get images and put them in variables
             image_data = open(image_fulname, 'rb').read()
@@ -134,6 +140,7 @@ class SendMyPie:
         os.chdir(save_current_dir)
         # print(f"changing directory to : {os.getcwd()}")
         # print(f"msg : {msg}")
+        logger.debug(f"msg : {msg}")
         self.messages_to_send.append(msg)
 
         return self.messages_to_send
@@ -164,10 +171,12 @@ class SendMyPie:
         # check if socket is open
         try:
             smtp.sock
-            print(f"smtp socked {smtp.sock}")
+            #print(f"smtp socked {smtp.sock}")
+            logger.debug(f"smtp socked {smtp.sock}")
             # get authenticated
             my_response = smtp.login(EMAIL_HOST_USER, EMAIL_HOST_PASSWORD)
             print(f"smtp login response {my_response}")
+            logger.info(f"smtp login response {my_response}")
 
             if len(list_messages) >= 1:
                 k = len(list_messages)
@@ -175,16 +184,22 @@ class SendMyPie:
                     my_response = smtp.send_message(msg)
                     k -= 1
                     print(f"sended 1 msg ; remaining msg to send {k}")
+                    logger.debug(f"sended 1 msg ; remaining msg to send {k}")
             else:
                 print(f"list messages empty {list_messages}")
+                logger.debug(f"list messages empty {list_messages}")
 
             # close connection
             smtp.quit()
             print(f"closed smtp connection")
+            logger.debug(f"closed smtp connection")
             time.sleep(5)
 
         except smtplib.SMTPException as e:
             logger.error(f"ERROR SMTP CONNECTION RESPONSE :{e}")
+
+        finally:
+            return "DONE"
 
 
 def update_add_more():
@@ -229,6 +244,7 @@ def enter_email(addr="", add_more=True):
             add_more = update_add_more()
 
     print(f"{bg.black} {fg.li_yellow}Recipients emails_addresses {emails_addresses}{fg.rs} {bg.rs}\n")
+    logger.info(f"Recipients emails_addresses {emails_addresses}")
     return emails_addresses
 
 
